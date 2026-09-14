@@ -1,24 +1,22 @@
+### Gradle ###
+.gradle/
+build/
+repo/
 
-## gradle
-/.gradle
-/build
-/out
+### IDEs ###
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
 
-## ForgeGradle
-/run
+### Minecraft ###
+run/
+logs/
+crash-reports/
+src/generated/resources/.cache/
 
-## eclipse
-/eclipse
-/.settings
-/.metadata
-/.classpath
-/.project
-/bin
-
-## intellij
-/out
-/.idea
-/*.iml
-/*.ipr
-/*.iws
-/atlassian-ide-plugin.xml
+### OS ###
+.DS_Store
+Thumbs.db

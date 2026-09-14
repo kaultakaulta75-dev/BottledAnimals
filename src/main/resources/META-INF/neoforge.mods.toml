@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/kaultakaulta75-dev/BottledAnimals/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+displayURL="https://github.com/kaultakaulta75-dev/BottledAnimals"
+logoFile="bottledanimals.png"
+authors="Emanuele Sarte (original); kaultakaulta75-dev (1.21.1 port)"
+credits="Original Bottled Animals mod by Emanuele Sarte / Ermans."
+description='''
+Digitize animals into items and automate breeding, growth, ranching and resource collection.
+This is the NeoForge 1.21.1 port of the original Minecraft 1.7.10 mod.
+'''
+
+[[dependencies.${mod_id}]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.226,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"

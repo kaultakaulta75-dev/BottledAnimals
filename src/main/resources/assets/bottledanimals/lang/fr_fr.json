@@ -1,0 +1,14 @@
+{
+  "item.bottledanimals.empty_bottle": "Fiole vide",
+  "item.bottledanimals.bottled_animal": "Animal en bouteille",
+  "item.bottledanimals.blank_pattern": "Motif vierge",
+  "item.bottledanimals.digitalized_animal": "Animal numérisé",
+  "item.bottledanimals.digitalized_baby_animal": "Bébé animal numérisé",
+  "item.bottledanimals.broken_pattern": "Motif brisé",
+  "item.bottledanimals.animal_circuit": "Circuit animal",
+  "item.bottledanimals.squid_food": "Nourriture pour calamar",
+  "item.bottledanimals.rancher_gear": "Engrenage d'élevage",
+  "item.bottledanimals.spawn_egg_frame": "Cadre d'œuf d'apparition",
+  "item.bottledanimals.milk_bucket": "Seau de lait",
+  "item.bottledanimals.food_bucket": "Seau de nourriture"
+}
