@@ -1,6 +1,7 @@
 package dev.kaulta.bottledanimals.registry;
 
 import dev.kaulta.bottledanimals.BottledAnimals;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -37,6 +38,25 @@ public final class ModItems {
     public static final DeferredItem<Item> FOOD_BUCKET =
             ITEMS.registerSimpleItem("food_bucket", new Item.Properties().stacksTo(1));
 
+    public static final DeferredItem<BlockItem> ANIMAL_DIGITIZER =
+            ITEMS.registerSimpleBlockItem(ModBlocks.ANIMAL_DIGITIZER);
+    public static final DeferredItem<BlockItem> ANIMAL_MATERIALIZER =
+            ITEMS.registerSimpleBlockItem(ModBlocks.ANIMAL_MATERIALIZER);
+    public static final DeferredItem<BlockItem> ANIMAL_BREEDER =
+            ITEMS.registerSimpleBlockItem(ModBlocks.ANIMAL_BREEDER);
+    public static final DeferredItem<BlockItem> GROWTH_ACCELERATOR =
+            ITEMS.registerSimpleBlockItem(ModBlocks.GROWTH_ACCELERATOR);
+    public static final DeferredItem<BlockItem> DROP_EXTRACTOR =
+            ITEMS.registerSimpleBlockItem(ModBlocks.DROP_EXTRACTOR);
+    public static final DeferredItem<BlockItem> ANIMAL_RANCHER =
+            ITEMS.registerSimpleBlockItem(ModBlocks.ANIMAL_RANCHER);
+    public static final DeferredItem<BlockItem> FOOD_CRUSHER =
+            ITEMS.registerSimpleBlockItem(ModBlocks.FOOD_CRUSHER);
+    public static final DeferredItem<BlockItem> WIRELESS_FEEDER =
+            ITEMS.registerSimpleBlockItem(ModBlocks.WIRELESS_FEEDER);
+    public static final DeferredItem<BlockItem> BASIC_GENERATOR =
+            ITEMS.registerSimpleBlockItem(ModBlocks.BASIC_GENERATOR);
+
     private ModItems() {
     }
 
@@ -58,6 +78,18 @@ public final class ModItems {
             event.accept(SPAWN_EGG_FRAME);
             event.accept(MILK_BUCKET);
             event.accept(FOOD_BUCKET);
+        }
+
+        if (event.getTabKey().equals(CreativeModeTabs.FUNCTIONAL_BLOCKS)) {
+            event.accept(ANIMAL_DIGITIZER);
+            event.accept(ANIMAL_MATERIALIZER);
+            event.accept(ANIMAL_BREEDER);
+            event.accept(GROWTH_ACCELERATOR);
+            event.accept(DROP_EXTRACTOR);
+            event.accept(ANIMAL_RANCHER);
+            event.accept(FOOD_CRUSHER);
+            event.accept(WIRELESS_FEEDER);
+            event.accept(BASIC_GENERATOR);
         }
     }
 }

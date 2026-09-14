@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "bottledanimals:block/drop_extractor"
+    }
+  }
+}

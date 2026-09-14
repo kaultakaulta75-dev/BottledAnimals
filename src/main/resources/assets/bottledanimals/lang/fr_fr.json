@@ -10,5 +10,14 @@
   "item.bottledanimals.rancher_gear": "Engrenage d'élevage",
   "item.bottledanimals.spawn_egg_frame": "Cadre d'œuf d'apparition",
   "item.bottledanimals.milk_bucket": "Seau de lait",
-  "item.bottledanimals.food_bucket": "Seau de nourriture"
+  "item.bottledanimals.food_bucket": "Seau de nourriture",
+  "block.bottledanimals.animal_digitizer": "Numériseur d'animaux",
+  "block.bottledanimals.animal_materializer": "Matérialiseur d'animaux",
+  "block.bottledanimals.animal_breeder": "Reproducteur d'animaux",
+  "block.bottledanimals.growth_accelerator": "Accélérateur de croissance",
+  "block.bottledanimals.drop_extractor": "Extracteur de ressources",
+  "block.bottledanimals.animal_rancher": "Éleveur automatisé",
+  "block.bottledanimals.food_crusher": "Broyeur de nourriture",
+  "block.bottledanimals.wireless_feeder": "Distributeur sans fil",
+  "block.bottledanimals.basic_generator": "Générateur basique"
 }

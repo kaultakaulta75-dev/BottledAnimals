@@ -10,5 +10,14 @@
   "item.bottledanimals.rancher_gear": "Rancher Gear",
   "item.bottledanimals.spawn_egg_frame": "Spawn Egg Frame",
   "item.bottledanimals.milk_bucket": "Milk Bucket",
-  "item.bottledanimals.food_bucket": "Food Bucket"
+  "item.bottledanimals.food_bucket": "Food Bucket",
+  "block.bottledanimals.animal_digitizer": "Animal Digitizer",
+  "block.bottledanimals.animal_materializer": "Animal Materializer",
+  "block.bottledanimals.animal_breeder": "Animal Breeder",
+  "block.bottledanimals.growth_accelerator": "Growth Accelerator",
+  "block.bottledanimals.drop_extractor": "Drop Extractor",
+  "block.bottledanimals.animal_rancher": "Animal Rancher",
+  "block.bottledanimals.food_crusher": "Food Crusher",
+  "block.bottledanimals.wireless_feeder": "Wireless Feeder",
+  "block.bottledanimals.basic_generator": "Basic Generator"
 }
