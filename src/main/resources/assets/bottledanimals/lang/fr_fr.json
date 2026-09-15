@@ -47,5 +47,19 @@
   "item.bottledanimals.digitalized_baby_animal.ocelot": "Bébé ocelot numérisé",
   "item.bottledanimals.bottled_animal.horse": "Cheval en bouteille",
   "item.bottledanimals.digitalized_animal.horse": "Cheval numérisé",
-  "item.bottledanimals.digitalized_baby_animal.horse": "Bébé cheval numérisé"
+  "item.bottledanimals.digitalized_baby_animal.horse": "Bébé cheval numérisé",
+  "message.bottledanimals.missing_animal_data": "Cet objet ne contient aucune donnée animale.",
+  "message.bottledanimals.need_blank_pattern": "Un motif vierge est requis dans l'inventaire.",
+  "message.bottledanimals.need_spawn_egg_frame": "Un cadre d'œuf d'apparition est requis dans l'inventaire.",
+  "message.bottledanimals.need_second_parent": "Un second animal numérisé identique est requis.",
+  "message.bottledanimals.need_two_food": "Deux nourritures adaptées à cet animal sont requises.",
+  "message.bottledanimals.need_food": "Une nourriture adaptée à cet animal est requise.",
+  "message.bottledanimals.need_rancher_gear": "Un engrenage d'élevage est requis dans l'inventaire.",
+  "message.bottledanimals.cannot_ranch": "Cet animal ne peut pas être traité par l'éleveur.",
+  "message.bottledanimals.digitized": "Animal numérisé.",
+  "message.bottledanimals.materialized": "Œuf d'apparition matérialisé.",
+  "message.bottledanimals.bred": "Bébé animal numérisé créé.",
+  "message.bottledanimals.grown": "Croissance de l'animal terminée.",
+  "message.bottledanimals.extracted": "Ressources animales extraites.",
+  "message.bottledanimals.ranched": "Ressource animale collectée."
 }

@@ -47,5 +47,19 @@
   "item.bottledanimals.digitalized_baby_animal.ocelot": "Digitalized Baby Ocelot",
   "item.bottledanimals.bottled_animal.horse": "Bottled Horse",
   "item.bottledanimals.digitalized_animal.horse": "Digitalized Horse",
-  "item.bottledanimals.digitalized_baby_animal.horse": "Digitalized Baby Horse"
+  "item.bottledanimals.digitalized_baby_animal.horse": "Digitalized Baby Horse",
+  "message.bottledanimals.missing_animal_data": "This item has no animal data.",
+  "message.bottledanimals.need_blank_pattern": "A Blank Pattern is required in your inventory.",
+  "message.bottledanimals.need_spawn_egg_frame": "A Spawn Egg Frame is required in your inventory.",
+  "message.bottledanimals.need_second_parent": "A second matching digitalized animal is required.",
+  "message.bottledanimals.need_two_food": "Two matching animal foods are required.",
+  "message.bottledanimals.need_food": "Matching animal food is required.",
+  "message.bottledanimals.need_rancher_gear": "Rancher Gear is required in your inventory.",
+  "message.bottledanimals.cannot_ranch": "This animal cannot be processed by the Rancher.",
+  "message.bottledanimals.digitized": "Animal digitized.",
+  "message.bottledanimals.materialized": "Spawn egg materialized.",
+  "message.bottledanimals.bred": "Digitalized baby created.",
+  "message.bottledanimals.grown": "Animal growth completed.",
+  "message.bottledanimals.extracted": "Animal resources extracted.",
+  "message.bottledanimals.ranched": "Animal resource collected."
 }
