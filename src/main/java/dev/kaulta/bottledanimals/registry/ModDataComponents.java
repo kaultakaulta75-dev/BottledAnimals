@@ -16,6 +16,10 @@ public final class ModDataComponents {
             DATA_COMPONENTS.registerComponentType("animal_type",
                     builder -> builder.persistent(Codec.STRING));
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FOOD_UNITS =
+            DATA_COMPONENTS.registerComponentType("food_units",
+                    builder -> builder.persistent(Codec.intRange(0, 1000)));
+
     private ModDataComponents() {
     }
 

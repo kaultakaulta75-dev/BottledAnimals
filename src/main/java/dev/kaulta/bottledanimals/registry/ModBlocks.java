@@ -1,8 +1,10 @@
 package dev.kaulta.bottledanimals.registry;
 
 import dev.kaulta.bottledanimals.BottledAnimals;
+import dev.kaulta.bottledanimals.block.FoodCrusherBlock;
 import dev.kaulta.bottledanimals.block.LegacyMachineBlock;
 import dev.kaulta.bottledanimals.block.MachineAction;
+import dev.kaulta.bottledanimals.block.WirelessFeederBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -28,8 +30,10 @@ public final class ModBlocks {
             processor("drop_extractor", MachineAction.EXTRACT);
     public static final DeferredBlock<LegacyMachineBlock> ANIMAL_RANCHER =
             processor("animal_rancher", MachineAction.RANCH);
-    public static final DeferredBlock<Block> FOOD_CRUSHER = machine("food_crusher");
-    public static final DeferredBlock<Block> WIRELESS_FEEDER = machine("wireless_feeder");
+    public static final DeferredBlock<FoodCrusherBlock> FOOD_CRUSHER =
+            BLOCKS.register("food_crusher", () -> new FoodCrusherBlock(machineProperties()));
+    public static final DeferredBlock<WirelessFeederBlock> WIRELESS_FEEDER =
+            BLOCKS.register("wireless_feeder", () -> new WirelessFeederBlock(machineProperties()));
     public static final DeferredBlock<Block> BASIC_GENERATOR = machine("basic_generator");
 
     private ModBlocks() {

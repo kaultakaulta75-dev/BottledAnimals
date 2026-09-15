@@ -61,5 +61,10 @@
   "message.bottledanimals.bred": "Digitalized baby created.",
   "message.bottledanimals.grown": "Animal growth completed.",
   "message.bottledanimals.extracted": "Animal resources extracted.",
-  "message.bottledanimals.ranched": "Animal resource collected."
+  "message.bottledanimals.ranched": "Animal resource collected.",
+  "message.bottledanimals.need_bucket": "An empty bucket is required in your inventory.",
+  "message.bottledanimals.food_crushed": "Food converted: %s mB.",
+  "message.bottledanimals.empty_food_bucket": "This food bucket is empty.",
+  "message.bottledanimals.nobody_needs_food": "No nearby player needs food or healing.",
+  "message.bottledanimals.players_fed": "Nearby players supplied using %s mB."
 }

@@ -5,6 +5,7 @@ import dev.kaulta.bottledanimals.animal.AnimalKind;
 import dev.kaulta.bottledanimals.item.AnimalStackItem;
 import dev.kaulta.bottledanimals.item.AnimalStacks;
 import dev.kaulta.bottledanimals.item.CapturingBottleItem;
+import dev.kaulta.bottledanimals.item.FoodBucketItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -40,7 +41,7 @@ public final class ModItems {
     public static final DeferredItem<Item> MILK_BUCKET =
             ITEMS.registerSimpleItem("milk_bucket", new Item.Properties().stacksTo(1));
     public static final DeferredItem<Item> FOOD_BUCKET =
-            ITEMS.registerSimpleItem("food_bucket", new Item.Properties().stacksTo(1));
+            ITEMS.register("food_bucket", () -> new FoodBucketItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<BlockItem> MACHINE_FRAME =
             ITEMS.registerSimpleBlockItem(ModBlocks.MACHINE_FRAME);

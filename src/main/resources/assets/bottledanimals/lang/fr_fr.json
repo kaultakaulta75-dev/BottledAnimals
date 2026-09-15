@@ -61,5 +61,10 @@
   "message.bottledanimals.bred": "Bébé animal numérisé créé.",
   "message.bottledanimals.grown": "Croissance de l'animal terminée.",
   "message.bottledanimals.extracted": "Ressources animales extraites.",
-  "message.bottledanimals.ranched": "Ressource animale collectée."
+  "message.bottledanimals.ranched": "Ressource animale collectée.",
+  "message.bottledanimals.need_bucket": "Un seau vide est requis dans l'inventaire.",
+  "message.bottledanimals.food_crushed": "Nourriture convertie : %s mB.",
+  "message.bottledanimals.empty_food_bucket": "Ce seau de nourriture est vide.",
+  "message.bottledanimals.nobody_needs_food": "Aucun joueur proche n'a besoin de nourriture ou de soins.",
+  "message.bottledanimals.players_fed": "Joueurs proches alimentés avec %s mB."
 }
