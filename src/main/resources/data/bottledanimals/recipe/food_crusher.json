@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "bottledanimals:machine_frame"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "bottledanimals:animal_circuit"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "N": {
+      "item": "bottledanimals:rancher_gear"
+    }
+  },
+  "pattern": [
+    " B ",
+    "NMN",
+    "GCG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bottledanimals:food_crusher"
+  }
+}

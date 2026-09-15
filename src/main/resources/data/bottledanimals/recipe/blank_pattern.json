@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "B": {
+      "item": "minecraft:iron_bars"
+    },
+    "C": {
+      "item": "bottledanimals:animal_circuit"
+    }
+  },
+  "pattern": [
+    "GBG",
+    "BCB",
+    "GBG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bottledanimals:blank_pattern"
+  }
+}

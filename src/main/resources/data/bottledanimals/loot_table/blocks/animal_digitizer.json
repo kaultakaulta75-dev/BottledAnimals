@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "bottledanimals:animal_digitizer"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "bottledanimals:blocks/animal_digitizer"
+}

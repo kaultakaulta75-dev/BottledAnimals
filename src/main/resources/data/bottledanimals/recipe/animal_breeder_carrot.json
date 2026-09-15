@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "bottledanimals:machine_frame"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "bottledanimals:animal_circuit"
+    },
+    "L": {
+      "item": "minecraft:golden_carrot"
+    },
+    "P": {
+      "item": "bottledanimals:blank_pattern"
+    }
+  },
+  "pattern": [
+    " L ",
+    "PMP",
+    "GCG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bottledanimals:animal_breeder"
+  }
+}

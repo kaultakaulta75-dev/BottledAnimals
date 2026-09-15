@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "W": {
+      "tag": "minecraft:planks"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " W ",
+    "GRG",
+    "GGG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bottledanimals:empty_bottle"
+  }
+}

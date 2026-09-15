@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "bottledanimals:machine_frame"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "bottledanimals:animal_circuit"
+    },
+    "S": {
+      "item": "minecraft:shears"
+    },
+    "B": {
+      "item": "minecraft:bucket"
+    }
+  },
+  "pattern": [
+    " S ",
+    "BMB",
+    "GCG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bottledanimals:animal_rancher"
+  }
+}

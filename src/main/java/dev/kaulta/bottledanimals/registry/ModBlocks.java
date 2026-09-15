@@ -13,6 +13,7 @@ public final class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(BottledAnimals.MOD_ID);
 
+    public static final DeferredBlock<Block> MACHINE_FRAME = machine("machine_frame");
     public static final DeferredBlock<Block> ANIMAL_DIGITIZER = machine("animal_digitizer");
     public static final DeferredBlock<Block> ANIMAL_MATERIALIZER = machine("animal_materializer");
     public static final DeferredBlock<Block> ANIMAL_BREEDER = machine("animal_breeder");

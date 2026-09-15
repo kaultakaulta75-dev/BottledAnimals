@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "bottledanimals:machine_frame"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "bottledanimals:animal_circuit"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "minecraft:iron_sword"
+    }
+  },
+  "pattern": [
+    " R ",
+    "SMS",
+    "GCG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bottledanimals:drop_extractor"
+  }
+}

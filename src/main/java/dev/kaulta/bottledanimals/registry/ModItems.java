@@ -42,6 +42,8 @@ public final class ModItems {
     public static final DeferredItem<Item> FOOD_BUCKET =
             ITEMS.registerSimpleItem("food_bucket", new Item.Properties().stacksTo(1));
 
+    public static final DeferredItem<BlockItem> MACHINE_FRAME =
+            ITEMS.registerSimpleBlockItem(ModBlocks.MACHINE_FRAME);
     public static final DeferredItem<BlockItem> ANIMAL_DIGITIZER =
             ITEMS.registerSimpleBlockItem(ModBlocks.ANIMAL_DIGITIZER);
     public static final DeferredItem<BlockItem> ANIMAL_MATERIALIZER =
@@ -88,6 +90,7 @@ public final class ModItems {
         }
 
         if (event.getTabKey().equals(CreativeModeTabs.FUNCTIONAL_BLOCKS)) {
+            event.accept(MACHINE_FRAME);
             event.accept(ANIMAL_DIGITIZER);
             event.accept(ANIMAL_MATERIALIZER);
             event.accept(ANIMAL_BREEDER);

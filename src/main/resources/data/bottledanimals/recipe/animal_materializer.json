@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "bottledanimals:machine_frame"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "bottledanimals:animal_circuit"
+    },
+    "E": {
+      "item": "bottledanimals:spawn_egg_frame"
+    },
+    "P": {
+      "item": "bottledanimals:broken_pattern"
+    }
+  },
+  "pattern": [
+    " E ",
+    "PMP",
+    "GCG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bottledanimals:animal_materializer"
+  }
+}

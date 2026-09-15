@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "P": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "pattern": [
+    " R ",
+    "P P",
+    " P "
+  ],
+  "result": {
+    "count": 1,
+    "id": "bottledanimals:spawn_egg_frame"
+  }
+}

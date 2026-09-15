@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "bottledanimals:machine_frame"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "bottledanimals:animal_circuit"
+    },
+    "P": {
+      "item": "bottledanimals:blank_pattern"
+    },
+    "B": {
+      "item": "bottledanimals:empty_bottle"
+    }
+  },
+  "pattern": [
+    " P ",
+    "BMB",
+    "GCG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bottledanimals:animal_digitizer"
+  }
+}
