@@ -1,6 +1,10 @@
 package dev.kaulta.bottledanimals.registry;
 
 import dev.kaulta.bottledanimals.BottledAnimals;
+import dev.kaulta.bottledanimals.animal.AnimalKind;
+import dev.kaulta.bottledanimals.item.AnimalStackItem;
+import dev.kaulta.bottledanimals.item.AnimalStacks;
+import dev.kaulta.bottledanimals.item.CapturingBottleItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -14,15 +18,15 @@ public final class ModItems {
             DeferredRegister.createItems(BottledAnimals.MOD_ID);
 
     public static final DeferredItem<Item> EMPTY_BOTTLE =
-            ITEMS.registerSimpleItem("empty_bottle", new Item.Properties().stacksTo(16));
+            ITEMS.register("empty_bottle", () -> new CapturingBottleItem(new Item.Properties().stacksTo(16)));
     public static final DeferredItem<Item> BOTTLED_ANIMAL =
-            ITEMS.registerSimpleItem("bottled_animal", new Item.Properties().stacksTo(1));
+            ITEMS.register("bottled_animal", () -> new AnimalStackItem(new Item.Properties().stacksTo(16)));
     public static final DeferredItem<Item> BLANK_PATTERN =
             ITEMS.registerSimpleItem("blank_pattern");
     public static final DeferredItem<Item> DIGITALIZED_ANIMAL =
-            ITEMS.registerSimpleItem("digitalized_animal", new Item.Properties().stacksTo(1));
+            ITEMS.register("digitalized_animal", () -> new AnimalStackItem(new Item.Properties()));
     public static final DeferredItem<Item> DIGITALIZED_BABY_ANIMAL =
-            ITEMS.registerSimpleItem("digitalized_baby_animal", new Item.Properties().stacksTo(1));
+            ITEMS.register("digitalized_baby_animal", () -> new AnimalStackItem(new Item.Properties()));
     public static final DeferredItem<Item> BROKEN_PATTERN =
             ITEMS.registerSimpleItem("broken_pattern");
     public static final DeferredItem<Item> ANIMAL_CIRCUIT =
@@ -30,7 +34,7 @@ public final class ModItems {
     public static final DeferredItem<Item> SQUID_FOOD =
             ITEMS.registerSimpleItem("squid_food");
     public static final DeferredItem<Item> RANCHER_GEAR =
-            ITEMS.registerSimpleItem("rancher_gear");
+            ITEMS.registerSimpleItem("rancher_gear", new Item.Properties().durability(64));
     public static final DeferredItem<Item> SPAWN_EGG_FRAME =
             ITEMS.registerSimpleItem("spawn_egg_frame");
     public static final DeferredItem<Item> MILK_BUCKET =
@@ -67,10 +71,7 @@ public final class ModItems {
     public static void addCreativeTabItems(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) {
             event.accept(EMPTY_BOTTLE);
-            event.accept(BOTTLED_ANIMAL);
             event.accept(BLANK_PATTERN);
-            event.accept(DIGITALIZED_ANIMAL);
-            event.accept(DIGITALIZED_BABY_ANIMAL);
             event.accept(BROKEN_PATTERN);
             event.accept(ANIMAL_CIRCUIT);
             event.accept(SQUID_FOOD);
@@ -78,6 +79,12 @@ public final class ModItems {
             event.accept(SPAWN_EGG_FRAME);
             event.accept(MILK_BUCKET);
             event.accept(FOOD_BUCKET);
+
+            for (AnimalKind kind : AnimalKind.values()) {
+                event.accept(AnimalStacks.create(BOTTLED_ANIMAL.get(), kind));
+                event.accept(AnimalStacks.create(DIGITALIZED_ANIMAL.get(), kind));
+                event.accept(AnimalStacks.create(DIGITALIZED_BABY_ANIMAL.get(), kind));
+            }
         }
 
         if (event.getTabKey().equals(CreativeModeTabs.FUNCTIONAL_BLOCKS)) {
