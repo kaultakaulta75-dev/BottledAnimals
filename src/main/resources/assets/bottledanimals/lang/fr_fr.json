@@ -66,5 +66,7 @@
   "message.bottledanimals.food_crushed": "Nourriture convertie : %s mB.",
   "message.bottledanimals.empty_food_bucket": "Ce seau de nourriture est vide.",
   "message.bottledanimals.nobody_needs_food": "Aucun joueur proche n'a besoin de nourriture ou de soins.",
-  "message.bottledanimals.players_fed": "Joueurs proches alimentés avec %s mB."
+  "message.bottledanimals.players_fed": "Joueurs proches alimentés avec %s mB.",
+  "message.bottledanimals.generator_fueled": "Générateur alimenté pour %s ticks.",
+  "message.bottledanimals.generator_status": "Énergie : %s / %s FE — combustion : %s ticks."
 }

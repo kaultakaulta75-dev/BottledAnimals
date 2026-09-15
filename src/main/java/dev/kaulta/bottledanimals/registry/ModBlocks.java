@@ -1,6 +1,7 @@
 package dev.kaulta.bottledanimals.registry;
 
 import dev.kaulta.bottledanimals.BottledAnimals;
+import dev.kaulta.bottledanimals.block.BasicGeneratorBlock;
 import dev.kaulta.bottledanimals.block.FoodCrusherBlock;
 import dev.kaulta.bottledanimals.block.LegacyMachineBlock;
 import dev.kaulta.bottledanimals.block.MachineAction;
@@ -34,7 +35,8 @@ public final class ModBlocks {
             BLOCKS.register("food_crusher", () -> new FoodCrusherBlock(machineProperties()));
     public static final DeferredBlock<WirelessFeederBlock> WIRELESS_FEEDER =
             BLOCKS.register("wireless_feeder", () -> new WirelessFeederBlock(machineProperties()));
-    public static final DeferredBlock<Block> BASIC_GENERATOR = machine("basic_generator");
+    public static final DeferredBlock<BasicGeneratorBlock> BASIC_GENERATOR =
+            BLOCKS.register("basic_generator", () -> new BasicGeneratorBlock(machineProperties()));
 
     private ModBlocks() {
     }
