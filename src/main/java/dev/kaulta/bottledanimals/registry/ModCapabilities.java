@@ -79,5 +79,10 @@ public final class ModCapabilities {
                 ModBlockEntities.ANIMAL_RANCHER.get(),
                 (machine, direction) -> machine.getEnergyStorage()
         );
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.ANIMAL_RANCHER.get(),
+                (machine, direction) -> machine.getFluidHandler()
+        );
     }
 }

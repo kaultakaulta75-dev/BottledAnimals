@@ -17,12 +17,18 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,6 +44,7 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
     public static final int CATALYST_SLOT = 3;
     public static final int OUTPUT_SLOT = 4;
     public static final int CAPACITY = 20_000;
+    public static final int MILK_CAPACITY = 10 * FluidType.BUCKET_VOLUME;
 
     private static final int STANDARD_PROCESS_TIME = 200;
     private static final int BREED_PROCESS_TIME = 4_800;
@@ -56,7 +63,11 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
             return switch (slot) {
                 case PRIMARY_SLOT -> isValidPrimaryInput(stack);
                 case SECONDARY_SLOT -> isValidSecondaryInput(stack);
-                case FOOD_SLOT -> action == MachineAction.BREED && isKnownAnimalFood(stack);
+                case FOOD_SLOT -> switch (action) {
+                    case BREED -> isKnownAnimalFood(stack);
+                    case RANCH -> stack.is(Items.BUCKET);
+                    default -> false;
+                };
                 case CATALYST_SLOT -> action == MachineAction.BREED
                         && stack.is(ModItems.BLANK_PATTERN.get());
                 default -> false;
@@ -65,7 +76,7 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
 
         @Override
         protected void onContentsChanged(int slot) {
-            if (slot != OUTPUT_SLOT) {
+            if (slot != OUTPUT_SLOT && !(action == MachineAction.RANCH && slot == FOOD_SLOT)) {
                 progress = 0;
             }
             setChanged();
@@ -73,6 +84,13 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
     };
 
     private final IEnergyStorage energyStorage = new MachineEnergyStorage();
+    private final FluidTank milkTank = new FluidTank(
+            MILK_CAPACITY, stack -> stack.is(NeoForgeMod.MILK.get())) {
+        @Override
+        protected void onContentsChanged() {
+            setChanged();
+        }
+    };
     private final ContainerData data = new ContainerData() {
         @Override
         public int get(int index) {
@@ -80,6 +98,8 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
                 case 0 -> progress;
                 case 1 -> getProcessTime();
                 case 2 -> energyStored;
+                case 3 -> action == MachineAction.RANCH ? milkTank.getFluidAmount() : 0;
+                case 4 -> action == MachineAction.RANCH ? MILK_CAPACITY : 0;
                 default -> 0;
             };
         }
@@ -96,7 +116,7 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
 
         @Override
         public int getCount() {
-            return 3;
+            return 5;
         }
     };
 
@@ -132,10 +152,18 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
         return energyStorage;
     }
 
+    public IFluidHandler getFluidHandler() {
+        return milkTank;
+    }
+
     public static void serverTick(
             Level level, BlockPos pos, BlockState state, ProcessingMachineBlockEntity machine) {
+        machine.fillMilkBucket();
         List<ItemStack> results = machine.getRecipeResults();
-        if (results.isEmpty() || !machine.canAcceptResults(results)) {
+        boolean milkRecipe = machine.isMilkRanchRecipe();
+        if ((!milkRecipe && results.isEmpty())
+                || (milkRecipe && machine.milkTank.getSpace() < FluidType.BUCKET_VOLUME)
+                || !machine.canAcceptResults(results)) {
             machine.resetProgress();
             return;
         }
@@ -254,11 +282,25 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
             return List.of();
         }
 
+        if (kind.get() == AnimalKind.COW || kind.get() == AnimalKind.MOOSHROOM) {
+            return List.of();
+        }
+
         List<ItemStack> drops = kind.get().rancherDrops();
         if (drops.isEmpty()) {
             return List.of();
         }
         return drops.stream().map(ItemStack::copy).toList();
+    }
+
+    private boolean isMilkRanchRecipe() {
+        if (action != MachineAction.RANCH
+                || !inventory.getStackInSlot(SECONDARY_SLOT).is(ModItems.RANCHER_GEAR.get())) {
+            return false;
+        }
+        return AnimalStacks.getKind(inventory.getStackInSlot(PRIMARY_SLOT))
+                .filter(kind -> kind == AnimalKind.COW || kind == AnimalKind.MOOSHROOM)
+                .isPresent();
     }
 
     private boolean isValidPrimaryInput(ItemStack stack) {
@@ -381,12 +423,36 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
                 inventory.extractItem(SECONDARY_SLOT, foodCount, false);
             }
             case EXTRACT -> inventory.extractItem(PRIMARY_SLOT, 1, false);
-            case RANCH -> damageRancherGear();
+            case RANCH -> {
+                if (isMilkRanchRecipe()) {
+                    milkTank.fill(
+                            new FluidStack(NeoForgeMod.MILK.get(), FluidType.BUCKET_VOLUME),
+                            IFluidHandler.FluidAction.EXECUTE);
+                }
+                damageRancherGear();
+            }
         }
 
         for (ItemStack result : results) {
             insertResult(result);
         }
+    }
+
+    private void fillMilkBucket() {
+        if (action != MachineAction.RANCH
+                || milkTank.getFluidAmount() < FluidType.BUCKET_VOLUME
+                || !inventory.getStackInSlot(FOOD_SLOT).is(Items.BUCKET)) {
+            return;
+        }
+
+        ItemStack milkBucket = new ItemStack(Items.MILK_BUCKET);
+        if (!canAcceptResults(List.of(milkBucket))) {
+            return;
+        }
+
+        inventory.extractItem(FOOD_SLOT, 1, false);
+        milkTank.drain(FluidType.BUCKET_VOLUME, IFluidHandler.FluidAction.EXECUTE);
+        insertResult(milkBucket);
     }
 
     private void damageRancherGear() {
@@ -466,6 +532,7 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
         migrateThreeSlotInventory();
         progress = Math.max(0, Math.min(getProcessTime(), tag.getInt("Progress")));
         energyStored = Math.max(0, Math.min(CAPACITY, tag.getInt("Energy")));
+        milkTank.readFromNBT(registries, tag.getCompound("MilkTank"));
     }
 
     private void migrateThreeSlotInventory() {
@@ -495,6 +562,7 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
         tag.putInt("Progress", progress);
         tag.putInt("Energy", energyStored);
         tag.put("Inventory", inventory.serializeNBT(registries));
+        tag.put("MilkTank", milkTank.writeToNBT(registries, new CompoundTag()));
     }
 
     private final class MachineEnergyStorage implements IEnergyStorage {

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.8
+
+- Added the Animal Rancher's persistent 10-bucket milk tank.
+- Cow and mooshroom cycles now add 1,000 mB of milk instead of directly creating a bucket.
+- Added bucket filling through the Rancher's third slot.
+- Exposed the tank through the NeoForge block fluid capability for pipe compatibility.
+- Added synchronized milk amount and a dedicated tank gauge to the shared screen.
+
 ## 0.1.0-alpha.7
 
 - Ported the Drop Extractor to persistent timed processing with four output slots.

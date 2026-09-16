@@ -31,7 +31,7 @@ public final class ProcessingMachineMenu extends AbstractContainerMenu {
                 containerId,
                 playerInventory,
                 new ItemStackHandler(ProcessingMachineBlockEntity.INVENTORY_SIZE),
-                new SimpleContainerData(3),
+                new SimpleContainerData(5),
                 ContainerLevelAccess.NULL,
                 Blocks.AIR);
     }
@@ -45,7 +45,7 @@ public final class ProcessingMachineMenu extends AbstractContainerMenu {
             Block machineBlock) {
         super(ModMenus.PROCESSING_MACHINE.get(), containerId);
         checkContainerSize(machineInventory, MACHINE_SLOTS);
-        checkContainerDataCount(data, 3);
+        checkContainerDataCount(data, 5);
         this.data = data;
         this.access = access;
         this.machineBlock = machineBlock;
@@ -134,5 +134,22 @@ public final class ProcessingMachineMenu extends AbstractContainerMenu {
 
     public int getEnergyScaled(int height) {
         return data.get(2) * height / ProcessingMachineBlockEntity.CAPACITY;
+    }
+
+    public int getFluidAmount() {
+        return data.get(3);
+    }
+
+    public int getFluidCapacity() {
+        return data.get(4);
+    }
+
+    public int getFluidScaled(int height) {
+        int capacity = getFluidCapacity();
+        return capacity <= 0 ? 0 : getFluidAmount() * height / capacity;
+    }
+
+    public boolean hasFluidTank() {
+        return getFluidCapacity() > 0;
     }
 }

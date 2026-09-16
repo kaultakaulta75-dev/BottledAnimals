@@ -72,6 +72,7 @@
   "container.bottledanimals.digitize": "Animal Digitizer",
   "container.bottledanimals.materialize": "Animal Materializer",
   "screen.bottledanimals.energy": "Energy: %s / %s FE",
+  "screen.bottledanimals.milk": "Milk: %s / %s mB",
   "container.bottledanimals.breed": "Animal Breeder",
   "container.bottledanimals.grow": "Growth Accelerator",
   "container.bottledanimals.extract": "Drop Extractor",

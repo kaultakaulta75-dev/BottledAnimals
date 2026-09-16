@@ -14,6 +14,7 @@ public final class ProcessingMachineScreen
     private static final int SLOT = 0xFF11151B;
     private static final int PROGRESS = 0xFF54C6EB;
     private static final int ENERGY = 0xFFE34B4B;
+    private static final int MILK = 0xFFF3F3E5;
 
     public ProcessingMachineScreen(
             ProcessingMachineMenu menu, Inventory playerInventory, Component title) {
@@ -54,6 +55,12 @@ public final class ProcessingMachineScreen
         int energy = menu.getEnergyScaled(52);
         graphics.fill(left + 154, top + 77 - energy, left + 160, top + 77, ENERGY);
 
+        if (menu.hasFluidTank()) {
+            graphics.fill(left + 164, top + 24, left + 172, top + 78, SLOT);
+            int fluid = menu.getFluidScaled(52);
+            graphics.fill(left + 165, top + 77 - fluid, left + 171, top + 77, MILK);
+        }
+
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 9; column++) {
                 drawSlot(graphics, left + 7 + column * 18, top + 83 + row * 18);
@@ -71,7 +78,7 @@ public final class ProcessingMachineScreen
 
     @Override
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        super.renderLabels(graphics, mouseX, mouseY);
+        graphics.drawString(font, title, titleLabelX, titleLabelY, 0xFFE0E6EF, false);
         graphics.drawString(
                 font,
                 Component.translatable(
@@ -82,5 +89,17 @@ public final class ProcessingMachineScreen
                 61,
                 0xFFE0E6EF,
                 false);
+        if (menu.hasFluidTank()) {
+            graphics.drawString(
+                    font,
+                    Component.translatable(
+                            "screen.bottledanimals.milk",
+                            menu.getFluidAmount(),
+                            menu.getFluidCapacity()),
+                    8,
+                    71,
+                    0xFFE0E6EF,
+                    false);
+        }
     }
 }
