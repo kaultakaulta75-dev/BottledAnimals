@@ -73,8 +73,16 @@
   "container.bottledanimals.materialize": "Animal Materializer",
   "screen.bottledanimals.energy": "Energy: %s / %s FE",
   "screen.bottledanimals.milk": "Milk: %s / %s mB",
+  "screen.bottledanimals.food_fluid": "Food: %s / %s mB",
+  "screen.bottledanimals.feeder_mode.disabled": "Disabled",
+  "screen.bottledanimals.feeder_mode.heal": "Heal",
+  "screen.bottledanimals.feeder_mode.feed": "Feed",
+  "screen.bottledanimals.feeder_mode.both": "Both",
+  "fluid_type.bottledanimals.food": "Liquid Food",
   "container.bottledanimals.breed": "Animal Breeder",
   "container.bottledanimals.grow": "Growth Accelerator",
   "container.bottledanimals.extract": "Drop Extractor",
-  "container.bottledanimals.ranch": "Animal Rancher"
+  "container.bottledanimals.ranch": "Animal Rancher",
+  "container.bottledanimals.food_crusher": "Food Crusher",
+  "container.bottledanimals.wireless_feeder": "Wireless Feeder"
 }

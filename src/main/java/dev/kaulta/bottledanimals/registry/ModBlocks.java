@@ -2,10 +2,10 @@ package dev.kaulta.bottledanimals.registry;
 
 import dev.kaulta.bottledanimals.BottledAnimals;
 import dev.kaulta.bottledanimals.block.BasicGeneratorBlock;
-import dev.kaulta.bottledanimals.block.FoodCrusherBlock;
+import dev.kaulta.bottledanimals.block.FoodMachineBlock;
+import dev.kaulta.bottledanimals.block.FoodMachineKind;
 import dev.kaulta.bottledanimals.block.MachineAction;
 import dev.kaulta.bottledanimals.block.ProcessingMachineBlock;
-import dev.kaulta.bottledanimals.block.WirelessFeederBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -31,10 +31,10 @@ public final class ModBlocks {
             persistentProcessor("drop_extractor", MachineAction.EXTRACT);
     public static final DeferredBlock<ProcessingMachineBlock> ANIMAL_RANCHER =
             persistentProcessor("animal_rancher", MachineAction.RANCH);
-    public static final DeferredBlock<FoodCrusherBlock> FOOD_CRUSHER =
-            BLOCKS.register("food_crusher", () -> new FoodCrusherBlock(machineProperties()));
-    public static final DeferredBlock<WirelessFeederBlock> WIRELESS_FEEDER =
-            BLOCKS.register("wireless_feeder", () -> new WirelessFeederBlock(machineProperties()));
+    public static final DeferredBlock<FoodMachineBlock> FOOD_CRUSHER =
+            foodMachine("food_crusher", FoodMachineKind.CRUSHER);
+    public static final DeferredBlock<FoodMachineBlock> WIRELESS_FEEDER =
+            foodMachine("wireless_feeder", FoodMachineKind.FEEDER);
     public static final DeferredBlock<BasicGeneratorBlock> BASIC_GENERATOR =
             BLOCKS.register("basic_generator", () -> new BasicGeneratorBlock(machineProperties()));
 
@@ -56,6 +56,11 @@ public final class ModBlocks {
     private static DeferredBlock<ProcessingMachineBlock> persistentProcessor(
             String name, MachineAction action) {
         return BLOCKS.register(name, () -> new ProcessingMachineBlock(machineProperties(), action));
+    }
+
+    private static DeferredBlock<FoodMachineBlock> foodMachine(
+            String name, FoodMachineKind kind) {
+        return BLOCKS.register(name, () -> new FoodMachineBlock(machineProperties(), kind));
     }
 
     public static void register(IEventBus modEventBus) {

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.0-alpha.9
+
+- Ported the Food Crusher to a persistent 200-tick, 10 FE/t processing machine.
+- Added a registered liquid food fluid and persistent 10-bucket tanks.
+- Added automatic food-bucket filling and crafting-container output to the Crusher.
+- Ported the Wireless Feeder to a persistent FE/fluid machine with a five-block range.
+- Restored the original 40-tick interval and Disabled, Heal, Feed and Both modes.
+- Added separate menus, synchronized gauges and NeoForge item, energy and fluid capabilities.
+
 ## 0.1.0-alpha.8
 
 - Added the Animal Rancher's persistent 10-bucket milk tank.

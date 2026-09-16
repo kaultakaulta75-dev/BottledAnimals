@@ -1,8 +1,10 @@
 package dev.kaulta.bottledanimals.registry;
 
 import dev.kaulta.bottledanimals.BottledAnimals;
+import dev.kaulta.bottledanimals.block.FoodMachineKind;
 import dev.kaulta.bottledanimals.block.MachineAction;
 import dev.kaulta.bottledanimals.block.entity.BasicGeneratorBlockEntity;
+import dev.kaulta.bottledanimals.block.entity.FoodMachineBlockEntity;
 import dev.kaulta.bottledanimals.block.entity.ProcessingMachineBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,71 +21,59 @@ public final class ModBlockEntities {
                     "basic_generator",
                     () -> BlockEntityType.Builder.of(
                             BasicGeneratorBlockEntity::new,
-                            ModBlocks.BASIC_GENERATOR.get()
-                    ).build(null)
-            );
+                            ModBlocks.BASIC_GENERATOR.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
-            ANIMAL_DIGITIZER = BLOCK_ENTITY_TYPES.register(
-                    "animal_digitizer",
-                    () -> BlockEntityType.Builder.of(
-                            (pos, state) -> ProcessingMachineBlockEntity.create(
-                                    MachineAction.DIGITIZE, pos, state),
-                            ModBlocks.ANIMAL_DIGITIZER.get()
-                    ).build(null)
-            );
-
+            ANIMAL_DIGITIZER = processor(
+                    "animal_digitizer", MachineAction.DIGITIZE, ModBlocks.ANIMAL_DIGITIZER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
-            ANIMAL_MATERIALIZER = BLOCK_ENTITY_TYPES.register(
-                    "animal_materializer",
-                    () -> BlockEntityType.Builder.of(
-                            (pos, state) -> ProcessingMachineBlockEntity.create(
-                                    MachineAction.MATERIALIZE, pos, state),
-                            ModBlocks.ANIMAL_MATERIALIZER.get()
-                    ).build(null)
-            );
-
+            ANIMAL_MATERIALIZER = processor(
+                    "animal_materializer", MachineAction.MATERIALIZE, ModBlocks.ANIMAL_MATERIALIZER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
-            ANIMAL_BREEDER = BLOCK_ENTITY_TYPES.register(
-                    "animal_breeder",
-                    () -> BlockEntityType.Builder.of(
-                            (pos, state) -> ProcessingMachineBlockEntity.create(
-                                    MachineAction.BREED, pos, state),
-                            ModBlocks.ANIMAL_BREEDER.get()
-                    ).build(null)
-            );
-
+            ANIMAL_BREEDER = processor(
+                    "animal_breeder", MachineAction.BREED, ModBlocks.ANIMAL_BREEDER);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
-            GROWTH_ACCELERATOR = BLOCK_ENTITY_TYPES.register(
-                    "growth_accelerator",
-                    () -> BlockEntityType.Builder.of(
-                            (pos, state) -> ProcessingMachineBlockEntity.create(
-                                    MachineAction.GROW, pos, state),
-                            ModBlocks.GROWTH_ACCELERATOR.get()
-                    ).build(null)
-            );
-
+            GROWTH_ACCELERATOR = processor(
+                    "growth_accelerator", MachineAction.GROW, ModBlocks.GROWTH_ACCELERATOR);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
-            DROP_EXTRACTOR = BLOCK_ENTITY_TYPES.register(
-                    "drop_extractor",
-                    () -> BlockEntityType.Builder.of(
-                            (pos, state) -> ProcessingMachineBlockEntity.create(
-                                    MachineAction.EXTRACT, pos, state),
-                            ModBlocks.DROP_EXTRACTOR.get()
-                    ).build(null)
-            );
-
+            DROP_EXTRACTOR = processor(
+                    "drop_extractor", MachineAction.EXTRACT, ModBlocks.DROP_EXTRACTOR);
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
-            ANIMAL_RANCHER = BLOCK_ENTITY_TYPES.register(
-                    "animal_rancher",
-                    () -> BlockEntityType.Builder.of(
-                            (pos, state) -> ProcessingMachineBlockEntity.create(
-                                    MachineAction.RANCH, pos, state),
-                            ModBlocks.ANIMAL_RANCHER.get()
-                    ).build(null)
-            );
+            ANIMAL_RANCHER = processor(
+                    "animal_rancher", MachineAction.RANCH, ModBlocks.ANIMAL_RANCHER);
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FoodMachineBlockEntity>>
+            FOOD_CRUSHER = foodMachine(
+                    "food_crusher", FoodMachineKind.CRUSHER, ModBlocks.FOOD_CRUSHER);
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FoodMachineBlockEntity>>
+            WIRELESS_FEEDER = foodMachine(
+                    "wireless_feeder", FoodMachineKind.FEEDER, ModBlocks.WIRELESS_FEEDER);
 
     private ModBlockEntities() {
+    }
+
+    private static DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
+            processor(
+                    String name,
+                    MachineAction action,
+                    net.neoforged.neoforge.registries.DeferredBlock<?> block) {
+        return BLOCK_ENTITY_TYPES.register(
+                name,
+                () -> BlockEntityType.Builder.of(
+                        (pos, state) -> ProcessingMachineBlockEntity.create(action, pos, state),
+                        block.get()).build(null));
+    }
+
+    private static DeferredHolder<BlockEntityType<?>, BlockEntityType<FoodMachineBlockEntity>>
+            foodMachine(
+                    String name,
+                    FoodMachineKind kind,
+                    net.neoforged.neoforge.registries.DeferredBlock<?> block) {
+        return BLOCK_ENTITY_TYPES.register(
+                name,
+                () -> BlockEntityType.Builder.of(
+                        (pos, state) -> FoodMachineBlockEntity.create(kind, pos, state),
+                        block.get()).build(null));
     }
 
     public static void register(IEventBus modEventBus) {

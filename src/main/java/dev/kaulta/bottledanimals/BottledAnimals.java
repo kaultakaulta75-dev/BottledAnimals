@@ -4,6 +4,7 @@ import dev.kaulta.bottledanimals.registry.ModBlockEntities;
 import dev.kaulta.bottledanimals.registry.ModBlocks;
 import dev.kaulta.bottledanimals.registry.ModCapabilities;
 import dev.kaulta.bottledanimals.registry.ModDataComponents;
+import dev.kaulta.bottledanimals.registry.ModFluids;
 import dev.kaulta.bottledanimals.registry.ModItems;
 import dev.kaulta.bottledanimals.registry.ModMenus;
 import net.neoforged.bus.api.IEventBus;
@@ -18,6 +19,7 @@ public final class BottledAnimals {
     public BottledAnimals(IEventBus modEventBus, ModContainer modContainer) {
         NeoForgeMod.enableMilkFluid();
         ModDataComponents.register(modEventBus);
+        ModFluids.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModItems.register(modEventBus);

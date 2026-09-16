@@ -84,5 +84,37 @@ public final class ModCapabilities {
                 ModBlockEntities.ANIMAL_RANCHER.get(),
                 (machine, direction) -> machine.getFluidHandler()
         );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.FOOD_CRUSHER.get(),
+                (machine, direction) -> machine.getItemHandler()
+        );
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.FOOD_CRUSHER.get(),
+                (machine, direction) -> machine.getEnergyStorage()
+        );
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.FOOD_CRUSHER.get(),
+                (machine, direction) -> machine.getFluidHandler()
+        );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.WIRELESS_FEEDER.get(),
+                (machine, direction) -> machine.getItemHandler()
+        );
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.WIRELESS_FEEDER.get(),
+                (machine, direction) -> machine.getEnergyStorage()
+        );
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK,
+                ModBlockEntities.WIRELESS_FEEDER.get(),
+                (machine, direction) -> machine.getFluidHandler()
+        );
     }
 }
