@@ -2,12 +2,12 @@ package dev.kaulta.bottledanimals.menu;
 
 import dev.kaulta.bottledanimals.block.entity.ProcessingMachineBlockEntity;
 import dev.kaulta.bottledanimals.registry.ModMenus;
-import net.minecraft.world.ContainerData;
-import net.minecraft.world.SimpleContainerData;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
