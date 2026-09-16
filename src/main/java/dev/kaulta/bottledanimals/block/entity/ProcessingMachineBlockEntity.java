@@ -26,16 +26,24 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public final class ProcessingMachineBlockEntity extends BlockEntity implements MenuProvider {
-    public static final int INVENTORY_SIZE = 3;
-    public static final int INPUT_SLOT = 0;
-    public static final int CATALYST_SLOT = 1;
-    public static final int OUTPUT_SLOT = 2;
+    public static final int INVENTORY_SIZE = 5;
+    public static final int PRIMARY_SLOT = 0;
+    public static final int SECONDARY_SLOT = 1;
+    public static final int FOOD_SLOT = 2;
+    public static final int CATALYST_SLOT = 3;
+    public static final int OUTPUT_SLOT = 4;
     public static final int CAPACITY = 20_000;
-    public static final int PROCESS_TIME = 200;
-    public static final int ENERGY_PER_TICK = 5;
+
+    private static final int STANDARD_PROCESS_TIME = 200;
+    private static final int BREED_PROCESS_TIME = 4_800;
+    private static final int GROW_PROCESS_TIME = 20_000;
+    private static final int STANDARD_ENERGY_PER_TICK = 5;
+    private static final int GROW_ENERGY_PER_TICK = 2;
 
     private final MachineAction action;
     private int progress;
@@ -45,8 +53,11 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             return switch (slot) {
-                case INPUT_SLOT -> isValidAnimalInput(stack);
-                case CATALYST_SLOT -> isValidCatalyst(stack);
+                case PRIMARY_SLOT -> isValidPrimaryInput(stack);
+                case SECONDARY_SLOT -> isValidSecondaryInput(stack);
+                case FOOD_SLOT -> action == MachineAction.BREED && isKnownAnimalFood(stack);
+                case CATALYST_SLOT -> action == MachineAction.BREED
+                        && stack.is(ModItems.BLANK_PATTERN.get());
                 default -> false;
             };
         }
@@ -66,7 +77,7 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
         public int get(int index) {
             return switch (index) {
                 case 0 -> progress;
-                case 1 -> PROCESS_TIME;
+                case 1 -> getProcessTime();
                 case 2 -> energyStored;
                 default -> 0;
             };
@@ -75,7 +86,7 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
         @Override
         public void set(int index, int value) {
             switch (index) {
-                case 0 -> progress = Math.max(0, Math.min(PROCESS_TIME, value));
+                case 0 -> progress = Math.max(0, Math.min(getProcessTime(), value));
                 case 2 -> energyStored = Math.max(0, Math.min(CAPACITY, value));
                 default -> {
                 }
@@ -101,6 +112,10 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
                     ModBlockEntities.ANIMAL_DIGITIZER.get(), action, pos, state);
             case MATERIALIZE -> new ProcessingMachineBlockEntity(
                     ModBlockEntities.ANIMAL_MATERIALIZER.get(), action, pos, state);
+            case BREED -> new ProcessingMachineBlockEntity(
+                    ModBlockEntities.ANIMAL_BREEDER.get(), action, pos, state);
+            case GROW -> new ProcessingMachineBlockEntity(
+                    ModBlockEntities.GROWTH_ACCELERATOR.get(), action, pos, state);
             default -> throw new IllegalArgumentException("Unsupported persistent machine: " + action);
         };
     }
@@ -117,58 +132,139 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
             Level level, BlockPos pos, BlockState state, ProcessingMachineBlockEntity machine) {
         ItemStack result = machine.getRecipeResult();
         if (result.isEmpty() || !machine.canAcceptResult(result)) {
-            if (machine.progress != 0) {
-                machine.progress = 0;
-                machine.setChanged();
-            }
-            return;
-        }
-        if (machine.energyStored < ENERGY_PER_TICK) {
+            machine.resetProgress();
             return;
         }
 
-        machine.energyStored -= ENERGY_PER_TICK;
+        int energyCost = machine.getEnergyPerTick();
+        if (machine.energyStored < energyCost) {
+            return;
+        }
+
+        machine.energyStored -= energyCost;
         machine.progress++;
-        if (machine.progress >= PROCESS_TIME) {
+        if (machine.progress >= machine.getProcessTime()) {
             machine.finishRecipe(result);
             machine.progress = 0;
         }
         machine.setChanged();
     }
 
-    private ItemStack getRecipeResult() {
-        ItemStack input = inventory.getStackInSlot(INPUT_SLOT);
-        ItemStack catalyst = inventory.getStackInSlot(CATALYST_SLOT);
-        if (!isValidAnimalInput(input) || !isValidCatalyst(catalyst)) {
-            return ItemStack.EMPTY;
+    private void resetProgress() {
+        if (progress != 0) {
+            progress = 0;
+            setChanged();
         }
+    }
 
-        Optional<AnimalKind> kind = AnimalStacks.getKind(input);
-        if (kind.isEmpty()) {
-            return ItemStack.EMPTY;
-        }
+    private ItemStack getRecipeResult() {
         return switch (action) {
-            case DIGITIZE -> AnimalStacks.create(ModItems.DIGITALIZED_ANIMAL.get(), kind.get());
-            case MATERIALIZE -> new ItemStack(kind.get().spawnEgg());
+            case DIGITIZE -> digitizerResult();
+            case MATERIALIZE -> materializerResult();
+            case BREED -> breederResult();
+            case GROW -> growthResult();
             default -> ItemStack.EMPTY;
         };
     }
 
-    private boolean isValidAnimalInput(ItemStack stack) {
+    private ItemStack digitizerResult() {
+        ItemStack animal = inventory.getStackInSlot(PRIMARY_SLOT);
+        if (!isValidPrimaryInput(animal)
+                || !inventory.getStackInSlot(SECONDARY_SLOT).is(ModItems.BLANK_PATTERN.get())) {
+            return ItemStack.EMPTY;
+        }
+        return AnimalStacks.getKind(animal)
+                .map(kind -> AnimalStacks.create(ModItems.DIGITALIZED_ANIMAL.get(), kind))
+                .orElse(ItemStack.EMPTY);
+    }
+
+    private ItemStack materializerResult() {
+        ItemStack animal = inventory.getStackInSlot(PRIMARY_SLOT);
+        if (!isValidPrimaryInput(animal)
+                || !inventory.getStackInSlot(SECONDARY_SLOT).is(ModItems.SPAWN_EGG_FRAME.get())) {
+            return ItemStack.EMPTY;
+        }
+        return AnimalStacks.getKind(animal)
+                .map(kind -> new ItemStack(kind.spawnEgg()))
+                .orElse(ItemStack.EMPTY);
+    }
+
+    private ItemStack breederResult() {
+        ItemStack firstParent = inventory.getStackInSlot(PRIMARY_SLOT);
+        ItemStack secondParent = inventory.getStackInSlot(SECONDARY_SLOT);
+        ItemStack food = inventory.getStackInSlot(FOOD_SLOT);
+        ItemStack pattern = inventory.getStackInSlot(CATALYST_SLOT);
+
+        Optional<AnimalKind> kind = AnimalStacks.getKind(firstParent);
+        if (kind.isEmpty()
+                || !firstParent.is(ModItems.DIGITALIZED_ANIMAL.get())
+                || !secondParent.is(ModItems.DIGITALIZED_ANIMAL.get())
+                || !AnimalStacks.sameKind(firstParent, secondParent)
+                || food.getCount() < 2
+                || !kind.get().isFood(food)
+                || !pattern.is(ModItems.BLANK_PATTERN.get())) {
+            return ItemStack.EMPTY;
+        }
+        return AnimalStacks.create(ModItems.DIGITALIZED_BABY_ANIMAL.get(), kind.get());
+    }
+
+    private ItemStack growthResult() {
+        ItemStack baby = inventory.getStackInSlot(PRIMARY_SLOT);
+        ItemStack food = inventory.getStackInSlot(SECONDARY_SLOT);
+        Optional<AnimalKind> kind = AnimalStacks.getKind(baby);
+        if (kind.isEmpty()
+                || !baby.is(ModItems.DIGITALIZED_BABY_ANIMAL.get())
+                || !kind.get().isFood(food)) {
+            return ItemStack.EMPTY;
+        }
+        return AnimalStacks.create(ModItems.DIGITALIZED_ANIMAL.get(), kind.get());
+    }
+
+    private boolean isValidPrimaryInput(ItemStack stack) {
         boolean correctItem = switch (action) {
             case DIGITIZE -> stack.is(ModItems.BOTTLED_ANIMAL.get());
-            case MATERIALIZE -> stack.is(ModItems.DIGITALIZED_ANIMAL.get());
+            case MATERIALIZE, BREED -> stack.is(ModItems.DIGITALIZED_ANIMAL.get());
+            case GROW -> stack.is(ModItems.DIGITALIZED_BABY_ANIMAL.get());
             default -> false;
         };
         return correctItem && AnimalStacks.getKind(stack).isPresent();
     }
 
-    private boolean isValidCatalyst(ItemStack stack) {
+    private boolean isValidSecondaryInput(ItemStack stack) {
         return switch (action) {
             case DIGITIZE -> stack.is(ModItems.BLANK_PATTERN.get());
             case MATERIALIZE -> stack.is(ModItems.SPAWN_EGG_FRAME.get());
+            case BREED -> stack.is(ModItems.DIGITALIZED_ANIMAL.get())
+                    && AnimalStacks.getKind(stack).isPresent();
+            case GROW -> isKnownAnimalFood(stack);
             default -> false;
         };
+    }
+
+    private static boolean isKnownAnimalFood(ItemStack stack) {
+        for (AnimalKind kind : AnimalKind.values()) {
+            if (kind.isFood(stack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int getProcessTime() {
+        return switch (action) {
+            case BREED -> BREED_PROCESS_TIME;
+            case GROW -> {
+                int foodCount = Math.min(4, inventory.getStackInSlot(SECONDARY_SLOT).getCount());
+                yield Math.max(1, (int) Math.round(GROW_PROCESS_TIME * Math.pow(0.85D, foodCount)));
+            }
+            default -> STANDARD_PROCESS_TIME;
+        };
+    }
+
+    private int getEnergyPerTick() {
+        return action == MachineAction.GROW
+                ? GROW_ENERGY_PER_TICK
+                : STANDARD_ENERGY_PER_TICK;
     }
 
     private boolean canAcceptResult(ItemStack result) {
@@ -179,8 +275,23 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
     }
 
     private void finishRecipe(ItemStack result) {
-        inventory.extractItem(INPUT_SLOT, 1, false);
-        inventory.extractItem(CATALYST_SLOT, 1, false);
+        switch (action) {
+            case DIGITIZE, MATERIALIZE -> {
+                inventory.extractItem(PRIMARY_SLOT, 1, false);
+                inventory.extractItem(SECONDARY_SLOT, 1, false);
+            }
+            case BREED -> {
+                inventory.extractItem(FOOD_SLOT, 2, false);
+                inventory.extractItem(CATALYST_SLOT, 1, false);
+            }
+            case GROW -> {
+                int foodCount = Math.min(4, inventory.getStackInSlot(SECONDARY_SLOT).getCount());
+                inventory.extractItem(PRIMARY_SLOT, 1, false);
+                inventory.extractItem(SECONDARY_SLOT, foodCount, false);
+            }
+            default -> {
+            }
+        }
 
         ItemStack output = inventory.getStackInSlot(OUTPUT_SLOT);
         if (output.isEmpty()) {
@@ -222,9 +333,31 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        progress = Math.max(0, Math.min(PROCESS_TIME, tag.getInt("Progress")));
-        energyStored = Math.max(0, Math.min(CAPACITY, tag.getInt("Energy")));
         inventory.deserializeNBT(registries, tag.getCompound("Inventory"));
+        migrateThreeSlotInventory();
+        progress = Math.max(0, Math.min(getProcessTime(), tag.getInt("Progress")));
+        energyStored = Math.max(0, Math.min(CAPACITY, tag.getInt("Energy")));
+    }
+
+    private void migrateThreeSlotInventory() {
+        if (inventory.getSlots() == INVENTORY_SIZE) {
+            return;
+        }
+
+        List<ItemStack> oldStacks = new ArrayList<>();
+        for (int slot = 0; slot < inventory.getSlots(); slot++) {
+            oldStacks.add(inventory.getStackInSlot(slot).copy());
+        }
+        inventory.setSize(INVENTORY_SIZE);
+        if (!oldStacks.isEmpty()) {
+            inventory.setStackInSlot(PRIMARY_SLOT, oldStacks.get(0));
+        }
+        if (oldStacks.size() > 1) {
+            inventory.setStackInSlot(SECONDARY_SLOT, oldStacks.get(1));
+        }
+        if (oldStacks.size() > 2) {
+            inventory.setStackInSlot(OUTPUT_SLOT, oldStacks.get(2));
+        }
     }
 
     @Override

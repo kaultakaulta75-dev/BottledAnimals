@@ -43,6 +43,26 @@ public final class ModBlockEntities {
                     ).build(null)
             );
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
+            ANIMAL_BREEDER = BLOCK_ENTITY_TYPES.register(
+                    "animal_breeder",
+                    () -> BlockEntityType.Builder.of(
+                            (pos, state) -> ProcessingMachineBlockEntity.create(
+                                    MachineAction.BREED, pos, state),
+                            ModBlocks.ANIMAL_BREEDER.get()
+                    ).build(null)
+            );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
+            GROWTH_ACCELERATOR = BLOCK_ENTITY_TYPES.register(
+                    "growth_accelerator",
+                    () -> BlockEntityType.Builder.of(
+                            (pos, state) -> ProcessingMachineBlockEntity.create(
+                                    MachineAction.GROW, pos, state),
+                            ModBlocks.GROWTH_ACCELERATOR.get()
+                    ).build(null)
+            );
+
     private ModBlockEntities() {
     }
 

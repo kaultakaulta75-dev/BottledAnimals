@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-alpha.6
+
+- Added persistent inventories and Forge Energy processing to the Animal Breeder and Growth Accelerator.
+- Restored the Breeder's 4,800-tick cycle, matching-parent rule and non-consumed parents.
+- Restored the Growth Accelerator's 20,000-tick base cycle and four-step food speed multiplier.
+- Expanded the shared machine menu to five slots and migrated alpha.5 three-slot inventories.
+
 ## 0.1.0-alpha.5
 
 - Replaced instant Digitizer and Materializer interactions with persistent block entities.

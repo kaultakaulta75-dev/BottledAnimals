@@ -24,10 +24,10 @@ public final class ModBlocks {
             persistentProcessor("animal_digitizer", MachineAction.DIGITIZE);
     public static final DeferredBlock<ProcessingMachineBlock> ANIMAL_MATERIALIZER =
             persistentProcessor("animal_materializer", MachineAction.MATERIALIZE);
-    public static final DeferredBlock<LegacyMachineBlock> ANIMAL_BREEDER =
-            processor("animal_breeder", MachineAction.BREED);
-    public static final DeferredBlock<LegacyMachineBlock> GROWTH_ACCELERATOR =
-            processor("growth_accelerator", MachineAction.GROW);
+    public static final DeferredBlock<ProcessingMachineBlock> ANIMAL_BREEDER =
+            persistentProcessor("animal_breeder", MachineAction.BREED);
+    public static final DeferredBlock<ProcessingMachineBlock> GROWTH_ACCELERATOR =
+            persistentProcessor("growth_accelerator", MachineAction.GROW);
     public static final DeferredBlock<LegacyMachineBlock> DROP_EXTRACTOR =
             processor("drop_extractor", MachineAction.EXTRACT);
     public static final DeferredBlock<LegacyMachineBlock> ANIMAL_RANCHER =

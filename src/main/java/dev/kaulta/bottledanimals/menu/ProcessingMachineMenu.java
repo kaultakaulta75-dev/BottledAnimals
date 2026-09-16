@@ -17,7 +17,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 public final class ProcessingMachineMenu extends AbstractContainerMenu {
-    private static final int MACHINE_SLOTS = 3;
+    private static final int MACHINE_SLOTS = ProcessingMachineBlockEntity.INVENTORY_SIZE;
     private static final int PLAYER_INVENTORY_START = MACHINE_SLOTS;
     private static final int PLAYER_HOTBAR_START = PLAYER_INVENTORY_START + 27;
     private static final int PLAYER_SLOTS_END = PLAYER_HOTBAR_START + 9;
@@ -50,9 +50,11 @@ public final class ProcessingMachineMenu extends AbstractContainerMenu {
         this.access = access;
         this.machineBlock = machineBlock;
 
-        addSlot(new SlotItemHandler(machineInventory, 0, 44, 35));
-        addSlot(new SlotItemHandler(machineInventory, 1, 76, 35));
-        addSlot(new SlotItemHandler(machineInventory, 2, 124, 35) {
+        addSlot(new SlotItemHandler(machineInventory, 0, 18, 35));
+        addSlot(new SlotItemHandler(machineInventory, 1, 44, 35));
+        addSlot(new SlotItemHandler(machineInventory, 2, 70, 35));
+        addSlot(new SlotItemHandler(machineInventory, 3, 96, 35));
+        addSlot(new SlotItemHandler(machineInventory, 4, 134, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
@@ -101,7 +103,7 @@ public final class ProcessingMachineMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(stack, PLAYER_INVENTORY_START, PLAYER_SLOTS_END, true)) {
                 return ItemStack.EMPTY;
             }
-        } else if (!moveItemStackTo(stack, 0, 2, false)) {
+        } else if (!moveItemStackTo(stack, 0, ProcessingMachineBlockEntity.OUTPUT_SLOT, false)) {
             if (slotIndex < PLAYER_HOTBAR_START) {
                 if (!moveItemStackTo(stack, PLAYER_HOTBAR_START, PLAYER_SLOTS_END, false)) {
                     return ItemStack.EMPTY;

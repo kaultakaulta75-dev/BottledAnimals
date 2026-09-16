@@ -71,5 +71,7 @@
   "message.bottledanimals.generator_status": "Énergie : %s / %s FE — combustion : %s ticks.",
   "container.bottledanimals.digitize": "Numériseur d'animaux",
   "container.bottledanimals.materialize": "Matérialiseur d'animaux",
-  "screen.bottledanimals.energy": "Énergie : %s / %s FE"
+  "screen.bottledanimals.energy": "Énergie : %s / %s FE",
+  "container.bottledanimals.breed": "Reproducteur d'animaux",
+  "container.bottledanimals.grow": "Accélérateur de croissance"
 }

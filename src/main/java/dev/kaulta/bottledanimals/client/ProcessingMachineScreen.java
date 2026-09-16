@@ -40,13 +40,15 @@ public final class ProcessingMachineScreen
         graphics.fill(left, top, left + 2, top + imageHeight, BORDER);
         graphics.fill(left + imageWidth - 2, top, left + imageWidth, top + imageHeight, BORDER);
 
+        drawSlot(graphics, left + 17, top + 34);
         drawSlot(graphics, left + 43, top + 34);
-        drawSlot(graphics, left + 75, top + 34);
-        drawSlot(graphics, left + 123, top + 34);
+        drawSlot(graphics, left + 69, top + 34);
+        drawSlot(graphics, left + 95, top + 34);
+        drawSlot(graphics, left + 133, top + 34);
 
-        graphics.fill(left + 97, top + 40, left + 121, top + 47, SLOT);
-        int progress = menu.getProgressScaled(24);
-        graphics.fill(left + 97, top + 40, left + 97 + progress, top + 47, PROGRESS);
+        graphics.fill(left + 115, top + 40, left + 131, top + 47, SLOT);
+        int progress = menu.getProgressScaled(16);
+        graphics.fill(left + 115, top + 40, left + 115 + progress, top + 47, PROGRESS);
 
         graphics.fill(left + 153, top + 24, left + 161, top + 78, SLOT);
         int energy = menu.getEnergyScaled(52);
