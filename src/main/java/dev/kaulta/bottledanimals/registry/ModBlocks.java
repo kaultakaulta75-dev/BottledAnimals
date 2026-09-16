@@ -5,6 +5,7 @@ import dev.kaulta.bottledanimals.block.BasicGeneratorBlock;
 import dev.kaulta.bottledanimals.block.FoodCrusherBlock;
 import dev.kaulta.bottledanimals.block.LegacyMachineBlock;
 import dev.kaulta.bottledanimals.block.MachineAction;
+import dev.kaulta.bottledanimals.block.ProcessingMachineBlock;
 import dev.kaulta.bottledanimals.block.WirelessFeederBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -19,10 +20,10 @@ public final class ModBlocks {
             DeferredRegister.createBlocks(BottledAnimals.MOD_ID);
 
     public static final DeferredBlock<Block> MACHINE_FRAME = machine("machine_frame");
-    public static final DeferredBlock<LegacyMachineBlock> ANIMAL_DIGITIZER =
-            processor("animal_digitizer", MachineAction.DIGITIZE);
-    public static final DeferredBlock<LegacyMachineBlock> ANIMAL_MATERIALIZER =
-            processor("animal_materializer", MachineAction.MATERIALIZE);
+    public static final DeferredBlock<ProcessingMachineBlock> ANIMAL_DIGITIZER =
+            persistentProcessor("animal_digitizer", MachineAction.DIGITIZE);
+    public static final DeferredBlock<ProcessingMachineBlock> ANIMAL_MATERIALIZER =
+            persistentProcessor("animal_materializer", MachineAction.MATERIALIZE);
     public static final DeferredBlock<LegacyMachineBlock> ANIMAL_BREEDER =
             processor("animal_breeder", MachineAction.BREED);
     public static final DeferredBlock<LegacyMachineBlock> GROWTH_ACCELERATOR =
@@ -55,6 +56,11 @@ public final class ModBlocks {
 
     private static DeferredBlock<LegacyMachineBlock> processor(String name, MachineAction action) {
         return BLOCKS.register(name, () -> new LegacyMachineBlock(machineProperties(), action));
+    }
+
+    private static DeferredBlock<ProcessingMachineBlock> persistentProcessor(
+            String name, MachineAction action) {
+        return BLOCKS.register(name, () -> new ProcessingMachineBlock(machineProperties(), action));
     }
 
     public static void register(IEventBus modEventBus) {

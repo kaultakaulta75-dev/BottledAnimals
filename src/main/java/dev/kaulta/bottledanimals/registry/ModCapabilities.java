@@ -13,5 +13,27 @@ public final class ModCapabilities {
                 ModBlockEntities.BASIC_GENERATOR.get(),
                 (generator, direction) -> generator.getEnergyStorage()
         );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.ANIMAL_DIGITIZER.get(),
+                (machine, direction) -> machine.getItemHandler()
+        );
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.ANIMAL_DIGITIZER.get(),
+                (machine, direction) -> machine.getEnergyStorage()
+        );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.ANIMAL_MATERIALIZER.get(),
+                (machine, direction) -> machine.getItemHandler()
+        );
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.ANIMAL_MATERIALIZER.get(),
+                (machine, direction) -> machine.getEnergyStorage()
+        );
     }
 }

@@ -68,5 +68,8 @@
   "message.bottledanimals.nobody_needs_food": "Aucun joueur proche n'a besoin de nourriture ou de soins.",
   "message.bottledanimals.players_fed": "Joueurs proches alimentés avec %s mB.",
   "message.bottledanimals.generator_fueled": "Générateur alimenté pour %s ticks.",
-  "message.bottledanimals.generator_status": "Énergie : %s / %s FE — combustion : %s ticks."
+  "message.bottledanimals.generator_status": "Énergie : %s / %s FE — combustion : %s ticks.",
+  "container.bottledanimals.digitize": "Numériseur d'animaux",
+  "container.bottledanimals.materialize": "Matérialiseur d'animaux",
+  "screen.bottledanimals.energy": "Énergie : %s / %s FE"
 }

@@ -68,5 +68,8 @@
   "message.bottledanimals.nobody_needs_food": "No nearby player needs food or healing.",
   "message.bottledanimals.players_fed": "Nearby players supplied using %s mB.",
   "message.bottledanimals.generator_fueled": "Generator fueled for %s ticks.",
-  "message.bottledanimals.generator_status": "Energy: %s / %s FE — burn time: %s ticks."
+  "message.bottledanimals.generator_status": "Energy: %s / %s FE — burn time: %s ticks.",
+  "container.bottledanimals.digitize": "Animal Digitizer",
+  "container.bottledanimals.materialize": "Animal Materializer",
+  "screen.bottledanimals.energy": "Energy: %s / %s FE"
 }

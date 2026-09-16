@@ -1,7 +1,9 @@
 package dev.kaulta.bottledanimals.registry;
 
 import dev.kaulta.bottledanimals.BottledAnimals;
+import dev.kaulta.bottledanimals.block.MachineAction;
 import dev.kaulta.bottledanimals.block.entity.BasicGeneratorBlockEntity;
+import dev.kaulta.bottledanimals.block.entity.ProcessingMachineBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -18,6 +20,26 @@ public final class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(
                             BasicGeneratorBlockEntity::new,
                             ModBlocks.BASIC_GENERATOR.get()
+                    ).build(null)
+            );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
+            ANIMAL_DIGITIZER = BLOCK_ENTITY_TYPES.register(
+                    "animal_digitizer",
+                    () -> BlockEntityType.Builder.of(
+                            (pos, state) -> ProcessingMachineBlockEntity.create(
+                                    MachineAction.DIGITIZE, pos, state),
+                            ModBlocks.ANIMAL_DIGITIZER.get()
+                    ).build(null)
+            );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
+            ANIMAL_MATERIALIZER = BLOCK_ENTITY_TYPES.register(
+                    "animal_materializer",
+                    () -> BlockEntityType.Builder.of(
+                            (pos, state) -> ProcessingMachineBlockEntity.create(
+                                    MachineAction.MATERIALIZE, pos, state),
+                            ModBlocks.ANIMAL_MATERIALIZER.get()
                     ).build(null)
             );
 

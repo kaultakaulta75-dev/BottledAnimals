@@ -5,6 +5,7 @@ import dev.kaulta.bottledanimals.registry.ModBlocks;
 import dev.kaulta.bottledanimals.registry.ModCapabilities;
 import dev.kaulta.bottledanimals.registry.ModDataComponents;
 import dev.kaulta.bottledanimals.registry.ModItems;
+import dev.kaulta.bottledanimals.registry.ModMenus;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -18,6 +19,7 @@ public final class BottledAnimals {
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModItems.register(modEventBus);
+        ModMenus.register(modEventBus);
         modEventBus.addListener(ModCapabilities::registerCapabilities);
         modEventBus.addListener(ModItems::addCreativeTabItems);
     }
