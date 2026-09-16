@@ -57,5 +57,27 @@ public final class ModCapabilities {
                 ModBlockEntities.GROWTH_ACCELERATOR.get(),
                 (machine, direction) -> machine.getEnergyStorage()
         );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.DROP_EXTRACTOR.get(),
+                (machine, direction) -> machine.getItemHandler()
+        );
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.DROP_EXTRACTOR.get(),
+                (machine, direction) -> machine.getEnergyStorage()
+        );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                ModBlockEntities.ANIMAL_RANCHER.get(),
+                (machine, direction) -> machine.getItemHandler()
+        );
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                ModBlockEntities.ANIMAL_RANCHER.get(),
+                (machine, direction) -> machine.getEnergyStorage()
+        );
     }
 }

@@ -7,13 +7,13 @@ A modern NeoForge port of **Bottled Animals**, originally created by Emanuele Sa
 - Minecraft 1.21.1
 - NeoForge 21.1.226+
 - Java 21
-- Current version: 0.1.0-alpha.6
+- Current version: 0.1.0-alpha.7
 
 ## Status
 
 The first playable port milestone is available. Animal items preserve their type, empty bottles capture the original nine adult animals, six animal machines process items on right-click, and the Food Crusher/Wireless Feeder have an initial playable food-fluid loop.
 
-The Animal Digitizer, Materializer, Breeder and Growth Accelerator now use persistent inventories, timed Forge Energy processing and a shared menu. The Drop Extractor and Animal Rancher still use the interim alpha interaction while their persistent implementations are ported. The Basic Generator exposes a real NeoForge FE capability and pushes energy to adjacent consumers.
+All six animal machines now use persistent inventories, timed Forge Energy processing and a shared menu. The Animal Rancher currently outputs milk as a bucket; its original internal fluid tank remains on the roadmap. The Basic Generator exposes a real NeoForge FE capability and pushes energy to adjacent consumers.
 
 The legacy 1.7.10 source remains on the `master` branch. Modern development happens on `1.21.1-neoforge`.
 
@@ -25,7 +25,7 @@ The legacy 1.7.10 source remains on the `master` branch. Modern development happ
 - [x] Animal data components and capture
 - [x] Animal Digitizer and Materializer (persistent inventory, menu and FE)
 - [x] Breeder and Growth Accelerator (persistent inventory, menu and FE)
-- [x] Drop Extractor and Animal Rancher (alpha interaction)
+- [x] Drop Extractor and Animal Rancher (persistent inventory, menu and FE)
 - [x] Food Crusher and Wireless Feeder (alpha interaction)
 - [x] Basic Generator and Forge Energy
 - [ ] Remaining machine menus and JEI integration

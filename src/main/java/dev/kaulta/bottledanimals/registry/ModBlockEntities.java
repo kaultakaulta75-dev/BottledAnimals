@@ -63,6 +63,26 @@ public final class ModBlockEntities {
                     ).build(null)
             );
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
+            DROP_EXTRACTOR = BLOCK_ENTITY_TYPES.register(
+                    "drop_extractor",
+                    () -> BlockEntityType.Builder.of(
+                            (pos, state) -> ProcessingMachineBlockEntity.create(
+                                    MachineAction.EXTRACT, pos, state),
+                            ModBlocks.DROP_EXTRACTOR.get()
+                    ).build(null)
+            );
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProcessingMachineBlockEntity>>
+            ANIMAL_RANCHER = BLOCK_ENTITY_TYPES.register(
+                    "animal_rancher",
+                    () -> BlockEntityType.Builder.of(
+                            (pos, state) -> ProcessingMachineBlockEntity.create(
+                                    MachineAction.RANCH, pos, state),
+                            ModBlocks.ANIMAL_RANCHER.get()
+                    ).build(null)
+            );
+
     private ModBlockEntities() {
     }
 

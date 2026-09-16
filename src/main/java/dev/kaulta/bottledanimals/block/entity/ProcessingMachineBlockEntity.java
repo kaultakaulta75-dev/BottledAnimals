@@ -44,6 +44,7 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
     private static final int GROW_PROCESS_TIME = 20_000;
     private static final int STANDARD_ENERGY_PER_TICK = 5;
     private static final int GROW_ENERGY_PER_TICK = 2;
+    private static final int RANCH_ENERGY_PER_TICK = 4;
 
     private final MachineAction action;
     private int progress;
@@ -116,7 +117,10 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
                     ModBlockEntities.ANIMAL_BREEDER.get(), action, pos, state);
             case GROW -> new ProcessingMachineBlockEntity(
                     ModBlockEntities.GROWTH_ACCELERATOR.get(), action, pos, state);
-            default -> throw new IllegalArgumentException("Unsupported persistent machine: " + action);
+            case EXTRACT -> new ProcessingMachineBlockEntity(
+                    ModBlockEntities.DROP_EXTRACTOR.get(), action, pos, state);
+            case RANCH -> new ProcessingMachineBlockEntity(
+                    ModBlockEntities.ANIMAL_RANCHER.get(), action, pos, state);
         };
     }
 
@@ -130,8 +134,8 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
 
     public static void serverTick(
             Level level, BlockPos pos, BlockState state, ProcessingMachineBlockEntity machine) {
-        ItemStack result = machine.getRecipeResult();
-        if (result.isEmpty() || !machine.canAcceptResult(result)) {
+        List<ItemStack> results = machine.getRecipeResults();
+        if (results.isEmpty() || !machine.canAcceptResults(results)) {
             machine.resetProgress();
             return;
         }
@@ -144,7 +148,7 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
         machine.energyStored -= energyCost;
         machine.progress++;
         if (machine.progress >= machine.getProcessTime()) {
-            machine.finishRecipe(result);
+            machine.finishRecipe(results);
             machine.progress = 0;
         }
         machine.setChanged();
@@ -157,14 +161,19 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
         }
     }
 
-    private ItemStack getRecipeResult() {
+    private List<ItemStack> getRecipeResults() {
         return switch (action) {
-            case DIGITIZE -> digitizerResult();
-            case MATERIALIZE -> materializerResult();
-            case BREED -> breederResult();
-            case GROW -> growthResult();
-            default -> ItemStack.EMPTY;
+            case DIGITIZE -> singleResult(digitizerResult());
+            case MATERIALIZE -> singleResult(materializerResult());
+            case BREED -> singleResult(breederResult());
+            case GROW -> singleResult(growthResult());
+            case EXTRACT -> extractorResults();
+            case RANCH -> rancherResults();
         };
+    }
+
+    private static List<ItemStack> singleResult(ItemStack result) {
+        return result.isEmpty() ? List.of() : List.of(result);
     }
 
     private ItemStack digitizerResult() {
@@ -220,10 +229,43 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
         return AnimalStacks.create(ModItems.DIGITALIZED_ANIMAL.get(), kind.get());
     }
 
+    private List<ItemStack> extractorResults() {
+        ItemStack animal = inventory.getStackInSlot(PRIMARY_SLOT);
+        Optional<AnimalKind> kind = AnimalStacks.getKind(animal);
+        if (kind.isEmpty() || !animal.is(ModItems.DIGITALIZED_ANIMAL.get())) {
+            return List.of();
+        }
+
+        List<ItemStack> results = new ArrayList<>();
+        for (ItemStack drop : kind.get().extractorDrops()) {
+            results.add(drop.copy());
+        }
+        results.add(new ItemStack(ModItems.BROKEN_PATTERN.get()));
+        return results;
+    }
+
+    private List<ItemStack> rancherResults() {
+        ItemStack animal = inventory.getStackInSlot(PRIMARY_SLOT);
+        ItemStack gear = inventory.getStackInSlot(SECONDARY_SLOT);
+        Optional<AnimalKind> kind = AnimalStacks.getKind(animal);
+        if (kind.isEmpty()
+                || !animal.is(ModItems.DIGITALIZED_ANIMAL.get())
+                || !gear.is(ModItems.RANCHER_GEAR.get())) {
+            return List.of();
+        }
+
+        List<ItemStack> drops = kind.get().rancherDrops();
+        if (drops.isEmpty()) {
+            return List.of();
+        }
+        return drops.stream().map(ItemStack::copy).toList();
+    }
+
     private boolean isValidPrimaryInput(ItemStack stack) {
         boolean correctItem = switch (action) {
             case DIGITIZE -> stack.is(ModItems.BOTTLED_ANIMAL.get());
-            case MATERIALIZE, BREED -> stack.is(ModItems.DIGITALIZED_ANIMAL.get());
+            case MATERIALIZE, BREED, EXTRACT, RANCH ->
+                    stack.is(ModItems.DIGITALIZED_ANIMAL.get());
             case GROW -> stack.is(ModItems.DIGITALIZED_BABY_ANIMAL.get());
             default -> false;
         };
@@ -237,6 +279,7 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
             case BREED -> stack.is(ModItems.DIGITALIZED_ANIMAL.get())
                     && AnimalStacks.getKind(stack).isPresent();
             case GROW -> isKnownAnimalFood(stack);
+            case RANCH -> stack.is(ModItems.RANCHER_GEAR.get());
             default -> false;
         };
     }
@@ -257,24 +300,72 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
                 int foodCount = Math.min(4, inventory.getStackInSlot(SECONDARY_SLOT).getCount());
                 yield Math.max(1, (int) Math.round(GROW_PROCESS_TIME * Math.pow(0.85D, foodCount)));
             }
+            case RANCH -> AnimalStacks.getKind(inventory.getStackInSlot(PRIMARY_SLOT))
+                    .map(kind -> switch (kind) {
+                        case COW, MOOSHROOM -> 200;
+                        case SHEEP -> 1_200;
+                        case CHICKEN -> 2_000;
+                        case SQUID -> 3_000;
+                        default -> 200;
+                    })
+                    .orElse(200);
             default -> STANDARD_PROCESS_TIME;
         };
     }
 
     private int getEnergyPerTick() {
-        return action == MachineAction.GROW
-                ? GROW_ENERGY_PER_TICK
-                : STANDARD_ENERGY_PER_TICK;
+        return switch (action) {
+            case GROW -> GROW_ENERGY_PER_TICK;
+            case RANCH -> RANCH_ENERGY_PER_TICK;
+            default -> STANDARD_ENERGY_PER_TICK;
+        };
     }
 
-    private boolean canAcceptResult(ItemStack result) {
-        ItemStack output = inventory.getStackInSlot(OUTPUT_SLOT);
-        return output.isEmpty()
-                || ItemStack.isSameItemSameComponents(output, result)
-                && output.getCount() + result.getCount() <= output.getMaxStackSize();
+    private int[] outputSlots() {
+        return action == MachineAction.EXTRACT
+                ? new int[]{SECONDARY_SLOT, FOOD_SLOT, CATALYST_SLOT, OUTPUT_SLOT}
+                : new int[]{OUTPUT_SLOT};
     }
 
-    private void finishRecipe(ItemStack result) {
+    private boolean canAcceptResults(List<ItemStack> results) {
+        int[] outputSlots = outputSlots();
+        List<ItemStack> simulated = new ArrayList<>();
+        for (int slot : outputSlots) {
+            simulated.add(inventory.getStackInSlot(slot).copy());
+        }
+
+        for (ItemStack result : results) {
+            int remaining = result.getCount();
+            for (ItemStack output : simulated) {
+                if (!output.isEmpty() && ItemStack.isSameItemSameComponents(output, result)) {
+                    int inserted = Math.min(remaining, output.getMaxStackSize() - output.getCount());
+                    output.grow(inserted);
+                    remaining -= inserted;
+                    if (remaining == 0) {
+                        break;
+                    }
+                }
+            }
+            if (remaining > 0) {
+                for (int index = 0; index < simulated.size(); index++) {
+                    if (simulated.get(index).isEmpty()) {
+                        int inserted = Math.min(remaining, result.getMaxStackSize());
+                        simulated.set(index, result.copyWithCount(inserted));
+                        remaining -= inserted;
+                        if (remaining == 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (remaining > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void finishRecipe(List<ItemStack> results) {
         switch (action) {
             case DIGITIZE, MATERIALIZE -> {
                 inventory.extractItem(PRIMARY_SLOT, 1, false);
@@ -289,17 +380,55 @@ public final class ProcessingMachineBlockEntity extends BlockEntity implements M
                 inventory.extractItem(PRIMARY_SLOT, 1, false);
                 inventory.extractItem(SECONDARY_SLOT, foodCount, false);
             }
-            default -> {
-            }
+            case EXTRACT -> inventory.extractItem(PRIMARY_SLOT, 1, false);
+            case RANCH -> damageRancherGear();
         }
 
-        ItemStack output = inventory.getStackInSlot(OUTPUT_SLOT);
-        if (output.isEmpty()) {
-            inventory.setStackInSlot(OUTPUT_SLOT, result);
+        for (ItemStack result : results) {
+            insertResult(result);
+        }
+    }
+
+    private void damageRancherGear() {
+        ItemStack gear = inventory.getStackInSlot(SECONDARY_SLOT);
+        if (gear.isEmpty()) {
+            return;
+        }
+        if (gear.getDamageValue() + 1 >= gear.getMaxDamage()) {
+            inventory.extractItem(SECONDARY_SLOT, 1, false);
         } else {
-            ItemStack combined = output.copy();
-            combined.grow(result.getCount());
-            inventory.setStackInSlot(OUTPUT_SLOT, combined);
+            ItemStack damaged = gear.copy();
+            damaged.setDamageValue(damaged.getDamageValue() + 1);
+            inventory.setStackInSlot(SECONDARY_SLOT, damaged);
+        }
+    }
+
+    private void insertResult(ItemStack result) {
+        int remaining = result.getCount();
+        for (int slot : outputSlots()) {
+            ItemStack output = inventory.getStackInSlot(slot);
+            if (!output.isEmpty() && ItemStack.isSameItemSameComponents(output, result)) {
+                int inserted = Math.min(remaining, output.getMaxStackSize() - output.getCount());
+                if (inserted > 0) {
+                    ItemStack combined = output.copy();
+                    combined.grow(inserted);
+                    inventory.setStackInSlot(slot, combined);
+                    remaining -= inserted;
+                }
+                if (remaining == 0) {
+                    return;
+                }
+            }
+        }
+        for (int slot : outputSlots()) {
+            if (inventory.getStackInSlot(slot).isEmpty()) {
+                int inserted = Math.min(remaining, result.getMaxStackSize());
+                inventory.setStackInSlot(slot, result.copyWithCount(inserted));
+                remaining -= inserted;
+                if (remaining == 0) {
+                    return;
+                }
+            }
         }
     }
 

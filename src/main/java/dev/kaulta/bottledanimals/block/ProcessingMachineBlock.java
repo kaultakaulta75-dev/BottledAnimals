@@ -44,7 +44,8 @@ public final class ProcessingMachineBlock extends Block implements EntityBlock {
             case MATERIALIZE -> ModBlockEntities.ANIMAL_MATERIALIZER.get();
             case BREED -> ModBlockEntities.ANIMAL_BREEDER.get();
             case GROW -> ModBlockEntities.GROWTH_ACCELERATOR.get();
-            default -> throw new IllegalStateException("Unsupported persistent machine: " + action);
+            case EXTRACT -> ModBlockEntities.DROP_EXTRACTOR.get();
+            case RANCH -> ModBlockEntities.ANIMAL_RANCHER.get();
         };
         return createTickerHelper(type, expected, ProcessingMachineBlockEntity::serverTick);
     }

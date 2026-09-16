@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.7
+
+- Ported the Drop Extractor to persistent timed processing with four output slots.
+- Restored extracted animal drops and Broken Pattern output.
+- Ported the Animal Rancher to persistent timed processing at 4 FE/t.
+- Restored species-specific Rancher cycle times and Rancher Gear durability loss.
+- All six animal machines now use block entities, saved inventories and the shared menu.
+
 ## 0.1.0-alpha.6
 
 - Added persistent inventories and Forge Energy processing to the Animal Breeder and Growth Accelerator.

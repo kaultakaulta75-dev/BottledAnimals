@@ -73,5 +73,7 @@
   "container.bottledanimals.materialize": "Matérialiseur d'animaux",
   "screen.bottledanimals.energy": "Énergie : %s / %s FE",
   "container.bottledanimals.breed": "Reproducteur d'animaux",
-  "container.bottledanimals.grow": "Accélérateur de croissance"
+  "container.bottledanimals.grow": "Accélérateur de croissance",
+  "container.bottledanimals.extract": "Extracteur de ressources",
+  "container.bottledanimals.ranch": "Éleveur automatisé"
 }
